@@ -39,7 +39,6 @@ func NewSftpClientForUser(url, user, password string) *Client {
 
 	err := c.getToken()
 	if err != nil {
-		log.Err(err, "get token")
 		return nil
 	}
 

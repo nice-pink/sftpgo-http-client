@@ -19,8 +19,26 @@ func main() {
 
 	password := os.Getenv("SFTPGO_PASSWORD")
 	client := sftp.NewSftpClientForUser(*url, *user, password)
+	if client == nil {
+		log.Error("Could not get sftp client!")
+		os.Exit(2)
+	}
+
+	// users
 	users := client.GetUsers(-1)
 	for _, u := range users {
 		log.Info(u.BaseUser.Username)
+	}
+
+	// groups
+	groups := client.GetGroups(-1)
+	for _, g := range groups {
+		log.Info(g.Name)
+	}
+
+	// folders
+	folders := client.GetFolders(-1)
+	for _, f := range folders {
+		log.Info(f.Name)
 	}
 }
