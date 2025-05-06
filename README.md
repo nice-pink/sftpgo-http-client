@@ -1,3 +1,7 @@
+# What
+
+Wrapper for sftpgo rest api.
+
 # Build command line executables
 
 ## Build single executable
