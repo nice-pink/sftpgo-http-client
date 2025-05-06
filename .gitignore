@@ -6,6 +6,7 @@ push-docker-container.sh
 
 # folder
 bin/
+.vscode
 
 # random
 .env

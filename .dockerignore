@@ -8,3 +8,5 @@ push-docker-container.sh
 
 # bin
 bin/
+
+.vscode
