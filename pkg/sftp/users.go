@@ -3,7 +3,6 @@ package sftp
 import (
 	"bytes"
 	"encoding/json"
-	"io"
 	"net/http"
 	"strconv"
 
@@ -14,13 +13,6 @@ import (
 const (
 	USERS_PATH string = "/users"
 )
-
-type UserSimple struct {
-	Username    string
-	Password    string
-	Email       string
-	Description string
-}
 
 func (c *Client) GetUsers(limit int) []sdk.User {
 	path := usersPath("")
@@ -36,17 +28,24 @@ func (c *Client) GetUsers(limit int) []sdk.User {
 	return users
 }
 
-func (c *Client) AddUser(simple UserSimple, template string) *sdk.User {
+func (c *Client) AddUser(template string, patch map[string]any) (*sdk.User, error) {
 	path := usersPath("")
+
+	// patch
+	userMap, _ := data.GetJson(template)
+	newUserMap := data.PatchMap(userMap, patch)
+	data, err := json.Marshal(newUserMap)
+	if err != nil {
+		return nil, err
+	}
 
 	// add user
 	var user *sdk.User
-	userReader := GetReaderFromUpdatedTemplate(template, simple)
-	_, err := c.RequestPath(http.MethodPost, path, userReader, user)
+	_, err = c.RequestPath(http.MethodPost, path, bytes.NewReader(data), user)
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return user
+	return user, nil
 }
 
 func (c *Client) UpdateUser(username string, patch map[string]any) (*sdk.User, error) {
@@ -102,48 +101,4 @@ func usersPath(suffix string) string {
 		return USERS_PATH
 	}
 	return USERS_PATH + "/" + suffix
-}
-
-func UpdateUser(user *sdk.User, simple UserSimple) {
-	if simple.Username != "" {
-		user.Username = simple.Username
-	}
-	if simple.Password != "" {
-		user.Password = simple.Password
-	}
-	if simple.Email != "" {
-		user.Email = simple.Email
-	}
-	if simple.Description != "" {
-		user.Description = simple.Description
-	}
-}
-
-func GetReaderFromUpdatedTemplate(template string, simple UserSimple) io.Reader {
-	// get map from template
-	userMap, err := data.GetJson(template)
-	if err != nil {
-		return nil
-	}
-
-	// update
-	if simple.Username != "" {
-		userMap["username"] = simple.Username
-	}
-	if simple.Password != "" {
-		userMap["password"] = simple.Password
-	}
-	if simple.Email != "" {
-		userMap["email"] = simple.Email
-	}
-	if simple.Description != "" {
-		userMap["description"] = simple.Description
-	}
-
-	// return reader
-	data, err := json.Marshal(userMap)
-	if err != nil {
-		return nil
-	}
-	return bytes.NewReader(data)
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"os"
 
@@ -25,20 +26,35 @@ func main() {
 	}
 
 	// users
+	log.Info("Users:")
 	users := client.GetUsers(-1)
 	for _, u := range users {
-		log.Info(u.BaseUser.Username)
+		log.Info("-", u.BaseUser.Username)
+	}
+	if users != nil {
+		data, _ := json.MarshalIndent(users[1], "", "  ")
+		log.Info(string(data))
 	}
 
 	// groups
+	log.Info("Groups:")
 	groups := client.GetGroups(-1)
 	for _, g := range groups {
-		log.Info(g.Name)
+		log.Info("-", g.Name)
+	}
+	if groups != nil {
+		data, _ := json.MarshalIndent(groups[7], "", "  ")
+		log.Info(string(data))
 	}
 
 	// folders
+	log.Info("Folders:")
 	folders := client.GetFolders(-1)
 	for _, f := range folders {
-		log.Info(f.Name)
+		log.Info("-", f.Name)
+	}
+	if folders != nil {
+		data, _ := json.MarshalIndent(folders[5], "", "  ")
+		log.Info(string(data))
 	}
 }

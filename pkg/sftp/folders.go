@@ -3,7 +3,6 @@ package sftp
 import (
 	"bytes"
 	"encoding/json"
-	"io"
 	"net/http"
 	"strconv"
 
@@ -15,19 +14,13 @@ const (
 	FOLDERS_PATH string = "/folders"
 )
 
-type FolderSimple struct {
-	Name        string
-	Description string
-	Path        string
-}
-
-func (c *Client) GetFolders(limit int) []sdk.BaseVirtualFolder {
+func (c *Client) GetFolders(limit int) []sdk.VirtualFolder {
 	path := foldersPath("")
 	if limit > -1 {
 		path += "?" + strconv.Itoa(limit)
 	}
 
-	var folders []sdk.BaseVirtualFolder
+	var folders []sdk.VirtualFolder
 	_, err := c.RequestPath(http.MethodGet, path, nil, &folders)
 	if err != nil {
 		return nil
@@ -35,20 +28,27 @@ func (c *Client) GetFolders(limit int) []sdk.BaseVirtualFolder {
 	return folders
 }
 
-func (c *Client) AddFolder(simple FolderSimple, template string) *sdk.BaseVirtualFolder {
+func (c *Client) AddFolder(template string, patch map[string]any) (*sdk.VirtualFolder, error) {
 	path := foldersPath("")
 
-	// add folder
-	var folder *sdk.BaseVirtualFolder
-	folderReader := GetReaderFromUpdatedFolderTemplate(template, simple)
-	_, err := c.RequestPath(http.MethodPost, path, folderReader, folder)
+	// patch
+	folderMap, _ := data.GetJson(template)
+	newFolderMap := data.PatchMap(folderMap, patch)
+	data, err := json.Marshal(newFolderMap)
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return folder
+
+	// add folder
+	var folder *sdk.VirtualFolder
+	_, err = c.RequestPath(http.MethodPost, path, bytes.NewReader(data), folder)
+	if err != nil {
+		return nil, err
+	}
+	return folder, nil
 }
 
-func (c *Client) UpdateFolder(name string, patch map[string]any) (*sdk.BaseVirtualFolder, error) {
+func (c *Client) UpdateFolder(name string, patch map[string]any) (*sdk.VirtualFolder, error) {
 	path := foldersPath(name)
 
 	// get current folder
@@ -66,7 +66,7 @@ func (c *Client) UpdateFolder(name string, patch map[string]any) (*sdk.BaseVirtu
 	}
 
 	// update folder
-	var folder *sdk.BaseVirtualFolder
+	var folder *sdk.VirtualFolder
 	_, err = c.RequestPath(http.MethodPut, path, bytes.NewReader(data), folder)
 	if err != nil {
 		return nil, err
@@ -74,10 +74,10 @@ func (c *Client) UpdateFolder(name string, patch map[string]any) (*sdk.BaseVirtu
 	return folder, nil
 }
 
-func (c *Client) GetFolder(name string) *sdk.BaseVirtualFolder {
+func (c *Client) GetFolder(name string) *sdk.VirtualFolder {
 	path := foldersPath(name)
 
-	var folder *sdk.BaseVirtualFolder
+	var folder *sdk.VirtualFolder
 	_, err := c.RequestPath(http.MethodGet, path, nil, folder)
 	if err != nil {
 		return nil
@@ -99,42 +99,4 @@ func foldersPath(suffix string) string {
 		return FOLDERS_PATH
 	}
 	return FOLDERS_PATH + "/" + suffix
-}
-
-func UpdateFolder(folder *sdk.BaseVirtualFolder, simple FolderSimple) {
-	if simple.Name != "" {
-		folder.Name = simple.Name
-	}
-	if simple.Description != "" {
-		folder.Description = simple.Description
-	}
-	if simple.Path != "" {
-		folder.MappedPath = simple.Path
-	}
-}
-
-func GetReaderFromUpdatedFolderTemplate(template string, simple FolderSimple) io.Reader {
-	// get map from template
-	folderMap, err := data.GetJson(template)
-	if err != nil {
-		return nil
-	}
-
-	// update
-	if simple.Name != "" {
-		folderMap["name"] = simple.Name
-	}
-	if simple.Description != "" {
-		folderMap["description"] = simple.Description
-	}
-	if simple.Path != "" {
-		folderMap["mapped_path"] = simple.Path
-	}
-
-	// return reader
-	data, err := json.Marshal(folderMap)
-	if err != nil {
-		return nil
-	}
-	return bytes.NewReader(data)
 }
