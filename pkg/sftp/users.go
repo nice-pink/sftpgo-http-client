@@ -77,7 +77,7 @@ func (c *Client) UpdateUser(username string, patch map[string]any) (*sdk.User, e
 func (c *Client) GetUser(username string) *sdk.User {
 	path := usersPath(username)
 
-	// add user
+	// get user
 	var user *sdk.User
 	_, err := c.RequestPath(http.MethodGet, path, nil, user)
 	if err != nil {
@@ -89,7 +89,7 @@ func (c *Client) GetUser(username string) *sdk.User {
 func (c *Client) DeleteUser(username string) error {
 	path := usersPath(username)
 
-	// add user
+	// delete user
 	_, err := c.RequestPath(http.MethodDelete, path, nil, nil)
 	return err
 }
