@@ -3,6 +3,7 @@ package sftp
 import (
 	"bytes"
 	"encoding/json"
+	"html"
 	"net/http"
 	"strconv"
 
@@ -98,5 +99,5 @@ func groupsPath(suffix string) string {
 	if suffix == "" {
 		return GROUPS_PATH
 	}
-	return GROUPS_PATH + "/" + suffix
+	return GROUPS_PATH + "/" + html.EscapeString(suffix)
 }

@@ -3,6 +3,7 @@ package sftp
 import (
 	"bytes"
 	"encoding/json"
+	"html"
 	"net/http"
 	"strconv"
 
@@ -113,5 +114,5 @@ func apiKeysPath(suffix string) string {
 	if suffix == "" {
 		return APIKEY_PATH
 	}
-	return APIKEY_PATH + "/" + suffix
+	return APIKEY_PATH + "/" + html.EscapeString(suffix)
 }
