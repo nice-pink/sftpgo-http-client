@@ -33,8 +33,8 @@ func (c *Client) AddUser(template string, patch map[string]any) (*sdk.User, erro
 
 	// patch
 	userMap, _ := data.GetJson(template)
-	newUserMap := data.PatchMap(userMap, patch)
-	data, err := json.Marshal(newUserMap)
+	userMap = data.PatchMap(userMap, patch)
+	data, err := json.Marshal(userMap)
 	if err != nil {
 		return nil, err
 	}
@@ -59,8 +59,8 @@ func (c *Client) UpdateUser(username string, patch map[string]any) (*sdk.User, e
 	}
 
 	// patch user with map
-	newUserMap := data.PatchMap(userMap, patch)
-	data, err := json.Marshal(newUserMap)
+	userMap = data.PatchMap(userMap, patch)
+	data, err := json.Marshal(userMap)
 	if err != nil {
 		return nil, err
 	}

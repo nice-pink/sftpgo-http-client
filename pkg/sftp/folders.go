@@ -33,8 +33,8 @@ func (c *Client) AddFolder(template string, patch map[string]any) (*sdk.VirtualF
 
 	// patch
 	folderMap, _ := data.GetJson(template)
-	newFolderMap := data.PatchMap(folderMap, patch)
-	data, err := json.Marshal(newFolderMap)
+	folderMap = data.PatchMap(folderMap, patch)
+	data, err := json.Marshal(folderMap)
 	if err != nil {
 		return nil, err
 	}
@@ -59,8 +59,8 @@ func (c *Client) UpdateFolder(name string, patch map[string]any) (*sdk.VirtualFo
 	}
 
 	// patch folder with map
-	newFolderMap := data.PatchMap(folderMap, patch)
-	data, err := json.Marshal(newFolderMap)
+	folderMap = data.PatchMap(folderMap, patch)
+	data, err := json.Marshal(folderMap)
 	if err != nil {
 		return nil, err
 	}

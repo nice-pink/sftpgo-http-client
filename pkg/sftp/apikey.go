@@ -46,8 +46,8 @@ func (c *Client) AddApiKey(template string, patch map[string]any) (*ApiKey, erro
 
 	// patch
 	keyMap, _ := data.GetJson(template)
-	newKeyMap := data.PatchMap(keyMap, patch)
-	data, err := json.Marshal(newKeyMap)
+	keyMap = data.PatchMap(keyMap, patch)
+	data, err := json.Marshal(keyMap)
 	if err != nil {
 		return nil, err
 	}
@@ -72,8 +72,8 @@ func (c *Client) UpdateApiKey(id string, patch map[string]any) (*ApiKey, error) 
 	}
 
 	// patch api key with map
-	newKeyMap := data.PatchMap(keyMap, patch)
-	data, err := json.Marshal(newKeyMap)
+	keyMap = data.PatchMap(keyMap, patch)
+	data, err := json.Marshal(keyMap)
 	if err != nil {
 		return nil, err
 	}

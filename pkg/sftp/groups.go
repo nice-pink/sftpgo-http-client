@@ -33,8 +33,8 @@ func (c *Client) AddGroup(template string, patch map[string]any) (*sdk.Group, er
 
 	// patch
 	groupMap, _ := data.GetJson(template)
-	newGroupMap := data.PatchMap(groupMap, patch)
-	data, err := json.Marshal(newGroupMap)
+	groupMap = data.PatchMap(groupMap, patch)
+	data, err := json.Marshal(groupMap)
 	if err != nil {
 		return nil, err
 	}
@@ -59,8 +59,8 @@ func (c *Client) UpdateGroup(name string, patch map[string]any) (*sdk.Group, err
 	}
 
 	// patch group with map
-	newGroupMap := data.PatchMap(groupMap, patch)
-	data, err := json.Marshal(newGroupMap)
+	groupMap = data.PatchMap(groupMap, patch)
+	data, err := json.Marshal(groupMap)
 	if err != nil {
 		return nil, err
 	}
