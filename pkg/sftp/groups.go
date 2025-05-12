@@ -3,7 +3,6 @@ package sftp
 import (
 	"bytes"
 	"encoding/json"
-	"html"
 	"net/http"
 	"strconv"
 
@@ -78,12 +77,12 @@ func (c *Client) UpdateGroup(name string, patch map[string]any) (*sdk.Group, err
 func (c *Client) GetGroup(name string) *sdk.Group {
 	path := groupsPath(name)
 
-	var group *sdk.Group
-	_, err := c.RequestPath(http.MethodGet, path, nil, group)
+	var group sdk.Group
+	_, err := c.RequestPath(http.MethodGet, path, nil, &group)
 	if err != nil {
 		return nil
 	}
-	return group
+	return &group
 }
 
 func (c *Client) DeleteGroup(name string) error {
@@ -99,5 +98,5 @@ func groupsPath(suffix string) string {
 	if suffix == "" {
 		return GROUPS_PATH
 	}
-	return GROUPS_PATH + "/" + html.EscapeString(suffix)
+	return GROUPS_PATH + "/" + UrlEncode(suffix)
 }

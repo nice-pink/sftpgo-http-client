@@ -3,7 +3,6 @@ package sftp
 import (
 	"bytes"
 	"encoding/json"
-	"html"
 	"net/http"
 	"strconv"
 
@@ -92,12 +91,12 @@ func (c *Client) GetApiKey(id string) *ApiKey {
 	path := apiKeysPath(id)
 
 	// get key
-	var key *ApiKey
-	_, err := c.RequestPath(http.MethodGet, path, nil, key)
+	var key ApiKey
+	_, err := c.RequestPath(http.MethodGet, path, nil, &key)
 	if err != nil {
 		return nil
 	}
-	return key
+	return &key
 }
 
 func (c *Client) DeleteApiKey(id string) error {
@@ -114,5 +113,5 @@ func apiKeysPath(suffix string) string {
 	if suffix == "" {
 		return APIKEY_PATH
 	}
-	return APIKEY_PATH + "/" + html.EscapeString(suffix)
+	return APIKEY_PATH + "/" + UrlEncode(suffix)
 }

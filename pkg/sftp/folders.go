@@ -3,7 +3,6 @@ package sftp
 import (
 	"bytes"
 	"encoding/json"
-	"html"
 	"net/http"
 	"strconv"
 
@@ -78,12 +77,12 @@ func (c *Client) UpdateFolder(name string, patch map[string]any) (*sdk.VirtualFo
 func (c *Client) GetFolder(name string) *sdk.VirtualFolder {
 	path := foldersPath(name)
 
-	var folder *sdk.VirtualFolder
-	_, err := c.RequestPath(http.MethodGet, path, nil, folder)
+	var folder sdk.VirtualFolder
+	_, err := c.RequestPath(http.MethodGet, path, nil, &folder)
 	if err != nil {
 		return nil
 	}
-	return folder
+	return &folder
 }
 
 func (c *Client) DeleteFolder(name string) error {
@@ -99,5 +98,5 @@ func foldersPath(suffix string) string {
 	if suffix == "" {
 		return FOLDERS_PATH
 	}
-	return FOLDERS_PATH + "/" + html.EscapeString(suffix)
+	return FOLDERS_PATH + "/" + UrlEncode(suffix)
 }

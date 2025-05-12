@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
-	"net/url"
 	"strconv"
 
 	"github.com/nice-pink/goutil/pkg/data"
@@ -79,12 +78,12 @@ func (c *Client) GetUser(username string) *sdk.User {
 	path := usersPath(username)
 
 	// get user
-	var user *sdk.User
-	_, err := c.RequestPath(http.MethodGet, path, nil, user)
+	var user sdk.User
+	_, err := c.RequestPath(http.MethodGet, path, nil, &user)
 	if err != nil {
 		return nil
 	}
-	return user
+	return &user
 }
 
 func (c *Client) DeleteUser(username string) error {
@@ -101,5 +100,5 @@ func usersPath(suffix string) string {
 	if suffix == "" {
 		return USERS_PATH
 	}
-	return USERS_PATH + "/" + url.QueryEscape(suffix)
+	return USERS_PATH + "/" + UrlEncode(suffix)
 }

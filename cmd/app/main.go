@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// config := flag.String("config", "", "Path to config file.")
-	url := flag.String("url", "http://localhost:8080", "Url of sftpgo rest api.")
+	url := flag.String("url", "http://localhost:8081", "Url of sftpgo rest api.")
 	user := flag.String("user", "admin", "User name for loging.")
 	flag.Parse()
 
@@ -57,4 +57,8 @@ func main() {
 		data, _ := json.MarshalIndent(folders[5], "", "  ")
 		log.Info(string(data))
 	}
+
+	log.Info("Folder:")
+	folder := client.GetFolder(folders[5].Name)
+	log.Info(folder)
 }
