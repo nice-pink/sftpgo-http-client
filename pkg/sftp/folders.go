@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/nice-pink/goutil/pkg/data"
+	"github.com/rs/zerolog/log"
 	"github.com/sftpgo/sdk"
 )
 
@@ -38,6 +39,8 @@ func (c *Client) AddFolder(template string, patch map[string]any) (*sdk.VirtualF
 	if err != nil {
 		return nil, err
 	}
+
+	log.Info("payload:", string(data))
 
 	// add folder
 	var folder *sdk.VirtualFolder
