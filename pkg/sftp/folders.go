@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/nice-pink/goutil/pkg/data"
-	"github.com/rs/zerolog/log"
+	"github.com/nice-pink/goutil/pkg/log"
 	"github.com/sftpgo/sdk"
 )
 
