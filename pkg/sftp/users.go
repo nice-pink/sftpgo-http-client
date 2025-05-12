@@ -3,8 +3,8 @@ package sftp
 import (
 	"bytes"
 	"encoding/json"
-	"html"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"github.com/nice-pink/goutil/pkg/data"
@@ -101,5 +101,5 @@ func usersPath(suffix string) string {
 	if suffix == "" {
 		return USERS_PATH
 	}
-	return USERS_PATH + "/" + html.EscapeString(suffix)
+	return USERS_PATH + "/" + url.QueryEscape(suffix)
 }
