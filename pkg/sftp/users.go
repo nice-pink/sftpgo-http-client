@@ -40,12 +40,12 @@ func (c *Client) AddUser(template string, patch map[string]any) (*sdk.User, erro
 	}
 
 	// add user
-	var user *sdk.User
-	_, err = c.RequestPath(http.MethodPost, path, bytes.NewReader(data), user)
+	var user sdk.User
+	_, err = c.RequestPath(http.MethodPost, path, bytes.NewReader(data), &user)
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return &user, nil
 }
 
 func (c *Client) UpdateUser(username string, patch map[string]any) (*sdk.User, error) {

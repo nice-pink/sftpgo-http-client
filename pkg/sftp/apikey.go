@@ -53,12 +53,12 @@ func (c *Client) AddApiKey(template string, patch map[string]any) (*ApiKey, erro
 	}
 
 	// add key
-	var key *ApiKey
-	_, err = c.RequestPath(http.MethodPost, path, bytes.NewReader(data), key)
+	var key ApiKey
+	_, err = c.RequestPath(http.MethodPost, path, bytes.NewReader(data), &key)
 	if err != nil {
 		return nil, err
 	}
-	return key, nil
+	return &key, nil
 }
 
 func (c *Client) UpdateApiKey(id string, patch map[string]any) (*ApiKey, error) {

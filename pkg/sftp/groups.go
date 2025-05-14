@@ -40,12 +40,12 @@ func (c *Client) AddGroup(template string, patch map[string]any) (*sdk.Group, er
 	}
 
 	// add group
-	var group *sdk.Group
-	_, err = c.RequestPath(http.MethodPost, path, bytes.NewReader(data), group)
+	var group sdk.Group
+	_, err = c.RequestPath(http.MethodPost, path, bytes.NewReader(data), &group)
 	if err != nil {
 		return nil, err
 	}
-	return group, nil
+	return &group, nil
 }
 
 func (c *Client) UpdateGroup(name string, patch map[string]any) (*sdk.Group, error) {
