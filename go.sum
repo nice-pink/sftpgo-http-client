@@ -1,4 +1,6 @@
 github.com/nice-pink/goutil v0.3.11 h1:BfzOUtLx2xbUH+XCi5MIRJxtqW7qzr9UHHn3Ci9L6/w=
 github.com/nice-pink/goutil v0.3.11/go.mod h1:9YMyl3vf6t4AJ6tlAHr2OKgunTG2DocOQqSDbKGnFe8=
+github.com/nice-pink/goutil v0.3.12-0.20250514102932-d2211b380015 h1:+YxDzi1jg1YQwXTyNcvKHiV3akCkmuiBC6FV655N7Qg=
+github.com/nice-pink/goutil v0.3.12-0.20250514102932-d2211b380015/go.mod h1:9YMyl3vf6t4AJ6tlAHr2OKgunTG2DocOQqSDbKGnFe8=
 github.com/sftpgo/sdk v0.1.8 h1:HAywJl9jZnigFGztA/CWLieOW+R+HH6js6o6/qYvuSY=
 github.com/sftpgo/sdk v0.1.8/go.mod h1:Isl0IEzS/Muvh8Fr4X+NWFsOS/fZQHRD4oPQpoY7C4g=
