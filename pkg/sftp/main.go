@@ -130,6 +130,10 @@ func (c *Client) RequestPath(method, path string, body io.Reader, responseBody a
 		return nil, err
 	}
 
+	if resp.StatusCode >= 400 {
+		log.Error("Status code >= 400! body:", string(data))
+	}
+
 	// unmarshal response
 	if responseBody != nil {
 		err = json.Unmarshal(data, responseBody)
