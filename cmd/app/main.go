@@ -40,7 +40,7 @@ func main() {
 	log.Info("Groups:")
 	groups := client.GetGroups(-1)
 	for _, g := range groups {
-		log.Info("-", g.Name)
+		log.Info("-", g.Name, g.ID)
 	}
 	if groups != nil {
 		data, _ := json.MarshalIndent(groups[7], "", "  ")
