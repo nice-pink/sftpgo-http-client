@@ -32,7 +32,7 @@ func (c *Client) AddFolder(template string, patch map[string]any) (*sdk.VirtualF
 	path := foldersPath("")
 
 	// patch
-	folderMap, _ := data.GetJson(template)
+	folderMap, _ := data.GetJsonMap(template)
 	folderMap = data.PatchMap(folderMap, patch)
 	data, err := json.Marshal(folderMap)
 	if err != nil {
