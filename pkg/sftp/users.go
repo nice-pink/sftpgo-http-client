@@ -32,7 +32,7 @@ func (c *Client) AddUser(template string, patch map[string]any) (*sdk.User, erro
 	path := usersPath("")
 
 	// patch
-	userMap, _ := data.GetJson(template)
+	userMap, _ := data.GetJsonMap(template)
 	userMap = data.PatchMap(userMap, patch)
 	data, err := json.Marshal(userMap)
 	if err != nil {

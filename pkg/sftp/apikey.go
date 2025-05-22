@@ -45,7 +45,7 @@ func (c *Client) AddApiKey(template string, patch map[string]any) (*ApiKey, erro
 	path := apiKeysPath("")
 
 	// patch
-	keyMap, _ := data.GetJson(template)
+	keyMap, _ := data.GetJsonMap(template)
 	keyMap = data.PatchMap(keyMap, patch)
 	data, err := json.Marshal(keyMap)
 	if err != nil {

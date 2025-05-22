@@ -32,7 +32,7 @@ func (c *Client) AddGroup(template string, patch map[string]any) (*sdk.Group, er
 	path := groupsPath("")
 
 	// patch
-	groupMap, _ := data.GetJson(template)
+	groupMap, _ := data.GetJsonMap(template)
 	groupMap = data.PatchMap(groupMap, patch)
 	data, err := json.Marshal(groupMap)
 	if err != nil {
